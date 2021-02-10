@@ -2,36 +2,29 @@
 A program for nesting coastal DFM and DFMWAQ models in FES tide model output and CMEMS MERCATOR global physiochemical and biogeochemical model output. It includes utilities for downloading and processing the data. 
 Designed as a backend for a webapp. **script branch, previously master, is no longer supported. Old FlaskApp branch is now master as of Dec 15 2019.**
 
-# Prerequisites
-* see requirements.txt. 
-
 **other requirements:**
+* an Azure account
 * a CMEMS account
 * a D-FLOW FM *.pli file
-* python must be in PATH environment variable
-* must copy your copy of the FES tide output to ~/app/coastserv/static/FES/. Please go to https://www.aviso.altimetry.fr/data/products/auxiliary-products/global-tide-fes/description-fes2012.html for more details
+* Docker Desktop 
 
-# Webapp usage
-first clone the repo, then:
+# Create the coastserv docker container and deploy on Azure as a webapp
+* Clone this repo with 
+```bash
+git clone https://github.com/openearth/coastserv_flask_azure.git
+```
+* If on a Windows machine, enable docker desktop to be used on the Ubuntu subsystem by going to Setting and checking the option: 'Expose daemon on tpc:...'
+* In the Ubuntu terminal, navigate to the git repo, cloned in the step before, and create the docker container with:
+```bash
+docker build -t coastserv.azurecr.io/coastserv:v6
+```
+Where you change the version number (v6). Once the container has been built, open the deploy.sh script and modify the version number to correspond to the name of your container. You should also have FES tidal consituent data in
+a folder called 'FES' in your main directory. Do not put the FES data in your main directory before you build the container. Copy it there once this has been done.
+```bash
+./deploy.sh
+```
+* In a browser, navigate to coastserv.azurewebsites.net. This might take some time to start if it is the first time you're deploying the container.
+* If you make any changes to the code on your local machine, push the changes to Azure with redeploy.sh. Again, remove the FES data from the directory before running the redeploy.sh script.
 
-$ conda env create -f coastserv.yml <br>
-$ conda activate coastserv <br>
-$ export FLASK_APP=run.py <br>
-$ cd app <br>
-$ flask run <br>
 
-Go to the local IP provided in the console and provide the necessary input. Note that $ export should be changed to $ set in windows.<br>
-The program makes a boundary file for each pli with the suffix '_tmp'. If more than 1 pli is needed, merge the contents of the ext files once all have been processed.<br>
-In the event that a process goes wrong, you can use test_boundary.py and test_tide.py to make boundary files individually if you do not want to re-download all of the netCDF files.<br>
-
-**For water quality simulations:**<br>
-Please examine the file ~/app/coastserv/models/units/units.py to adjust the unit conversions to be congruent with the D-WAQ sub file that will ultimately be used.
-
-# To-do
-* River loads based on Emilio Mayorga et al., (2010). Currently we do not have access to this data.
-
-# Known issues
-* The use of the water level (steric) correction is still not verified conceptually and should be used with care.
-* D-FLOW FM does not yet support advection boundaries that prescribe advection *out* of the model. Use with care.
-* BLOOM models are not yet supported, but
 
