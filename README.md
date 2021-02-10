@@ -16,7 +16,17 @@ This app is deployd on Azure at coasterv.azurewebsites.net. This readme describe
 git clone https://github.com/openearth/coastserv_flask_azure.git
 ```
 * If on a Windows machine enable docker desktop to be used on the Ubuntu subsystem by going to Setting and checking the option: 'Expose daemon on tpc:...'
-* In the Ubuntu terminal, navigate to the git repo, cloned in the step before, and run
+* In the Ubuntu terminal, navigate to the git repo, cloned in the step before. Build the docker container with
+```bash
+docker build --tag coastserv.azurecr.io/coastserv:v6 .
+```
+* Test the container on your local machine first with:
+```bash
+docker run -p 80:80 -v D:\PROJECTS\2021\COASTSERV_azure\FES\:/app/app/coastserv/static/FES coastserv.azurecr.io/coastserv:v6
+```
+Where you replace 'D:\PROJECTS\2021\COASTSERV_azure\FES\' with the path to your FES data.
+* In a browser, navigate to 'localhost:80' and run a test by using the test.pli file. 
+* If all looks well, push the FES data to Azure and deploy your app with:
 ```bash
 ./deploy.sh
 ```
