@@ -1,6 +1,7 @@
 # COASTSERV_Model
-A program for nesting coastal DFM and DFMWAQ models in FES tide model output and CMEMS MERCATOR global physiochemical and biogeochemical model output. It includes utilities for downloading and processing the data. 
-Designed as a backend for a webapp. **script branch, previously master, is no longer supported. Old FlaskApp branch is now master as of Dec 15 2019.**
+A program for nesting coastal DFM and DFMWAQ models in FES tide model output and CMEMS MERCATOR global physiochemical and biogeochemical model output. 
+This app is deployd on Azure at coasterv.azurewebsites.net. This readme describes how to create the docker container and deploy the app to Azure.
+
 
 **other requirements:**
 * an Azure account
